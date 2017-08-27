@@ -1,2 +1,2 @@
-require("./style.css");
-document.write('triangles!');
+require('./style.css')
+require('./triangle/simple-triangle.js')

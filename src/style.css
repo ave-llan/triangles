@@ -1,3 +1,13 @@
 body {
     background: steelblue;
 }
+
+.triangle {
+  fill: orange;
+  stroke: black;
+  stroke-width: 0.5;
+}
+
+.triangle:hover {
+  fill: red;
+}
