@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "css-loader": "^0.28.5",
+    "d3-selection": "^1.1.0",
     "style-loader": "^0.18.2"
   }
 }
