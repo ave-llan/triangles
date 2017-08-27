@@ -1,0 +1,29 @@
+{
+  "name": "triangles",
+  "version": "1.0.0",
+  "description": "Experiments with triangles in D3js.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrleszcz/triangles.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrleszcz/triangles/issues"
+  },
+  "homepage": "https://github.com/jrleszcz/triangles#readme",
+  "devDependencies": {
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "dependencies": {
+    "css-loader": "^0.28.5",
+    "style-loader": "^0.18.2"
+  }
+}
