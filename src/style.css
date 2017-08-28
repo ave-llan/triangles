@@ -3,9 +3,9 @@ body {
 }
 
 .triangle {
-  fill: orange;
+  fill: none;
   stroke: black;
-  stroke-width: 0.5;
+  stroke-width: 0.05;
 }
 
 .triangle:hover {

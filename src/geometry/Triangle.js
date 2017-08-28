@@ -1,4 +1,5 @@
 const Point = require('./Point.js')
+const Line = require('./Line.js')
 
 /**
  * Represents a triangle.
@@ -22,6 +23,29 @@ class Triangle {
 
   toString() {
     return this.pathDescription()
+  }
+
+  /**
+   * @return {Array[Triangle]} two triangles
+   */
+  divideInTwo() {
+    const longestSide = [
+      new Line(this.a, this.b),
+      new Line(this.b, this.c),
+      new Line(this.c, this.a)
+    ]
+    .reduce((longest, cur) => 
+      longest.length() > cur.length() ? longest : cur)
+
+    const oppositePoint = [this.a, this.b, this.c]
+      .find(point => 
+        !(longestSide.a === point || longestSide.b === point))
+    const middleLong = longestSide.midPoint()
+
+    return [
+      new Triangle(middleLong, oppositePoint, longestSide.a),
+      new Triangle(middleLong, oppositePoint, longestSide.b),
+    ]
   }
 
 }
