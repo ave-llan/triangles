@@ -6,8 +6,9 @@ body {
   fill: none;
   stroke: black;
   stroke-width: 0.05;
+  pointer-events: all;
 }
 
 .triangle:hover {
-  fill: red;
+  fill: orange;
 }
