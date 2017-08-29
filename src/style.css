@@ -5,10 +5,14 @@ body {
 .triangle {
   fill: none;
   stroke: black;
-  stroke-width: 0.05;
+  stroke-width: 0.02;
   pointer-events: all;
 }
 
 .triangle:hover {
+  fill: lightblue;
+}
+
+.triangle .fill {
   fill: orange;
 }

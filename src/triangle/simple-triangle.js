@@ -9,7 +9,7 @@ const originalTriangle = new Triangle(
   ...[[5, 95], [95,95], [50, 5]]
   .map(point => new Point(...point)))
 
-const NUM_GENERATIONS = 6
+const NUM_GENERATIONS = 14
 
 const svg = createSvg();
 
@@ -21,7 +21,7 @@ drawTriangleAndChildren(originalTriangle)
  * @parm {number=} generations
  */
 function drawTriangleAndChildren(triangle, generations = NUM_GENERATIONS) {
-  if (generations) {
+  if (stayAlive(generations)) {
     triangle.divideInTwo()
       .forEach(child => 
         drawTriangleAndChildren(child, generations - 1))
@@ -35,6 +35,13 @@ function drawTriangle(triangle) {
     .attr('class', 'triangle')
   .append('path')
   .attr('d', triangle.pathDescription())
+  .on("mousedown", colorTriangle)
+}
+
+function colorTriangle(event) {
+  const triangle = d3Selection.select(this)
+  triangle
+      .classed('fill', !triangle.classed('fill'))
 }
 
 function createSvg() {
@@ -46,5 +53,12 @@ function createSvg() {
   return svg
 }
 
+/**
+ * Decides if generations die. Probability of 1 in generations + 1.
+ * @param {number} generations
+ */
+function stayAlive(generations) {
+  return Math.round(Math.random() * generations)
+}
 
 module.exports = createSvg;
