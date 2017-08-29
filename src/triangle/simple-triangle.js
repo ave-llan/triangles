@@ -9,7 +9,7 @@ const originalTriangle = new Triangle(
   ...[[5, 95], [95,95], [50, 5]]
   .map(point => new Point(...point)))
 
-const NUM_GENERATIONS = 10
+const NUM_GENERATIONS = 6
 
 const svg = createSvg();
 
@@ -21,11 +21,12 @@ drawTriangleAndChildren(originalTriangle)
  * @parm {number=} generations
  */
 function drawTriangleAndChildren(triangle, generations = NUM_GENERATIONS) {
-  drawTriangle(triangle)
   if (generations) {
     triangle.divideInTwo()
       .forEach(child => 
         drawTriangleAndChildren(child, generations - 1))
+  } else {
+    drawTriangle(triangle)
   }
 }
 
