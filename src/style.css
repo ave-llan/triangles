@@ -1,10 +1,10 @@
 body {
-    background: steelblue;
+    /*background: steelblue;*/
 }
 
 .triangle {
   fill: none;
-  stroke: black;
+  stroke: steelblue;
   stroke-width: 0.02;
   pointer-events: all;
 }
