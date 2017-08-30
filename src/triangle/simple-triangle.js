@@ -5,36 +5,30 @@ const Triangle = require('../geometry/Triangle.js')
 const WIDTH = 100,
      HEIGHT = 100
 
-const originalTriangle = new Triangle(
-  ...[[5, 95], [95,95], [50, 5]]
-  .map(point => new Point(...point)))
+const originalTriangle = [[5, 95], [95,95], [50, 5]]
 
-const NUM_GENERATIONS = 14
+const NUM_GENERATIONS = 16
 
 const svg = createSvg();
 
-drawTriangleAndChildren(originalTriangle)
+divideAndDraw(originalTriangle)
 
 /**
  * Recursively draws a triangle and n generations of children.
  * @param {Triangle} triangle
  * @parm {number=} generations
  */
-function drawTriangleAndChildren(triangle, generations = NUM_GENERATIONS) {
-  if (stayAlive(generations)) {
-    triangle.divideInTwo()
-      .forEach(child => 
-        drawTriangleAndChildren(child, generations - 1))
-  } else {
-    drawTriangle(triangle)
-  }
+function divideAndDraw(triangle, generations = NUM_GENERATIONS) {
+  stayAlive(generations) ? divideTriangle(triangle).forEach(
+                               child => divideAndDraw(child, generations - 1))
+                         : drawTriangle(triangle)
 }
 
 function drawTriangle(triangle) {
   svg.append('g')
     .attr('class', 'triangle')
   .append('path')
-  .attr('d', triangle.pathDescription())
+  .attr('d', trianglePathDescription(...triangle))
   .on("mousedown", colorTriangle)
 }
 
@@ -48,8 +42,7 @@ function createSvg() {
   var svg = d3Selection.select('body').append('svg')
       .attr('width', '95%')
       .attr('height', '95%')
-      .attr('viewBox', 
-        [0, 0, WIDTH, HEIGHT].join(' '));
+      .attr('viewBox', [0, 0, WIDTH, HEIGHT].join(' '));
   return svg
 }
 
@@ -57,8 +50,37 @@ function createSvg() {
  * Decides if generations die. Probability of 1 in generations + 1.
  * @param {number} generations
  */
-function stayAlive(generations) {
+const stayAlive(generations) =>
   return Math.round(Math.random() * generations)
+}
+
+const trianglePathDescription(a, b, c) {
+  return `M${a}L${b}L${c}z`
+}
+
+/** Divides a triangle in two from the middle of the longest side. */
+function divideTriangle(triangle) {
+  let longest = 0
+  let a, b, z
+  for (_ of triangle) {
+    const length = lineLength(triangle.slice(0, 2))
+    if (length > longest) {
+      [longest, [a, b, z]] = [length, triangle]
+    }
+    triangle.push(triangle.shift())
+  }
+  const midpoint = lineMidpoint([a, b])
+  return [[a, midpoint, z], [b, midpoint, z]]
+}
+
+function lineLength(line) {
+  const [[ax, ay], [bx, by]] = line
+  return Math.sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by))
+}
+
+function lineMidpoint(line) {
+  const [[ax, ay], [bx, by]] = line
+  return [(ax + bx) / 2, (ay + by) / 2]
 }
 
 module.exports = createSvg;
