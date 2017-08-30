@@ -1,6 +1,4 @@
 const d3Selection = require("d3-selection")
-const Point = require('../geometry/Point.js')
-const Triangle = require('../geometry/Triangle.js')
 
 const WIDTH = 100,
      HEIGHT = 100
@@ -50,11 +48,11 @@ function createSvg() {
  * Decides if generations die. Probability of 1 in generations + 1.
  * @param {number} generations
  */
-const stayAlive(generations) =>
+function stayAlive(generations) {
   return Math.round(Math.random() * generations)
 }
 
-const trianglePathDescription(a, b, c) {
+function trianglePathDescription(a, b, c) {
   return `M${a}L${b}L${c}z`
 }
 
