@@ -2,13 +2,10 @@ const d3Selection = require("d3-selection")
 
 const WIDTH = 100,
      HEIGHT = 100
-
 const originalTriangle = [[5, 95], [95,95], [50, 5]]
-
 const NUM_GENERATIONS = 16
 
 const svg = createSvg();
-
 divideAndDraw(originalTriangle)
 
 /**
@@ -37,11 +34,10 @@ function colorTriangle(event) {
 }
 
 function createSvg() {
-  var svg = d3Selection.select('body').append('svg')
+  return d3Selection.select('body').append('svg')
       .attr('width', '95%')
       .attr('height', '95%')
       .attr('viewBox', [0, 0, WIDTH, HEIGHT].join(' '));
-  return svg
 }
 
 /**
