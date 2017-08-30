@@ -28,8 +28,7 @@ function drawTriangle(triangle) {
 }
 
 function colorTriangle(event) {
-  const triangle = d3Selection.select(this)
-  triangle
+  d3Selection.select(this)
       .classed('fill', !triangle.classed('fill'))
 }
 
@@ -40,10 +39,7 @@ function createSvg() {
       .attr('viewBox', [0, 0, WIDTH, HEIGHT].join(' '));
 }
 
-/**
- * Decides if generations die. Probability of 1 in generations + 1.
- * @param {number} generations
- */
+// Probability of 1 in generations + 1 that triangle stops reproducing.
 function stayAlive(generations) {
   return Math.round(Math.random() * generations)
 }
@@ -52,7 +48,7 @@ function trianglePathDescription(a, b, c) {
   return `M${a}L${b}L${c}z`
 }
 
-/** Divides a triangle in two from the middle of the longest side. */
+// Divides a triangle in two from the middle of the longest side.
 function divideTriangle(triangle) {
   let longest = 0
   let a, b, z
