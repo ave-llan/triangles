@@ -8,11 +8,7 @@ const NUM_GENERATIONS = 16
 const svg = createSvg();
 divideAndDraw(originalTriangle)
 
-/**
- * Recursively draws a triangle and n generations of children.
- * @param {Triangle} triangle
- * @parm {number=} generations
- */
+// Recursively draws a triangle and n generations of children.
 function divideAndDraw(triangle, generations = NUM_GENERATIONS) {
   stayAlive(generations) ? divideTriangle(triangle).forEach(
                                child => divideAndDraw(child, generations - 1))
