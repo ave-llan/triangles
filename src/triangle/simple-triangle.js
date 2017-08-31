@@ -3,35 +3,45 @@ const d3Selection = require("d3-selection")
 const WIDTH = 100,
      HEIGHT = 100
 const originalTriangle = [[5, 95], [95,95], [50, 5]]
-const NUM_GENERATIONS = 16
+const NUM_GENERATIONS = 10
 
 const svg = createSvg();
-divideAndDraw(originalTriangle)
+drawFromTriangle(originalTriangle)
 
-// Recursively draws a triangle and n generations of children.
-function divideAndDraw(triangle, generations = NUM_GENERATIONS) {
-  stayAlive(generations) ? divideTriangle(triangle).forEach(
-                               child => divideAndDraw(child, generations - 1))
-                         : drawTriangle(triangle)
+function drawFromTriangle(triangle) {
+  const triangles = svg.selectAll('.triangle')
+    .data(propagate(triangle, NUM_GENERATIONS), trianglePathDescription)
+  
+  triangles.exit()
+    .remove()
+
+  triangles.enter()
+    .append('g')
+      .attr('class', 'triangle')
+    .append('path')
+      .attr('d', trianglePathDescription)
+      .on('mousedown', subdivideTriangle)
 }
 
-function drawTriangle(triangle) {
-  svg.append('g')
-    .attr('class', 'triangle')
-  .append('path')
-  .attr('d', trianglePathDescription(...triangle))
-  .on("mousedown", colorTriangle)
+function propagate(triangle, generations) {
+  const progeny = []
+  if (stayAlive(generations)) {
+    divideTriangle(triangle).forEach(
+      child => progeny.push(...propagate(child, generations - 1)))
+  } else {
+    progeny.push(triangle)
+  }
+  return progeny
 }
 
-function colorTriangle(event) {
-  d3Selection.select(this)
-      .classed('fill', !triangle.classed('fill'))
+function subdivideTriangle(event) {
+  drawFromTriangle(d3Selection.select(this).datum())
 }
 
 function createSvg() {
   return d3Selection.select('body').append('svg')
-      .attr('width', '95%')
-      .attr('height', '95%')
+      .attr('width', '100%')
+      .attr('height', '100%')
       .attr('viewBox', [0, 0, WIDTH, HEIGHT].join(' '));
 }
 
@@ -40,8 +50,8 @@ function stayAlive(generations) {
   return Math.round(Math.random() * generations)
 }
 
-function trianglePathDescription(a, b, c) {
-  return `M${a}L${b}L${c}z`
+function trianglePathDescription(t) {
+  return `M${t[0]}L${t[1]}L${t[2]}z`
 }
 
 // Divides a triangle in two from the middle of the longest side.
