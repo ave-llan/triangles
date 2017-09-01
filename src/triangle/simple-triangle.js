@@ -3,7 +3,7 @@ const d3Selection = require("d3-selection")
 const WIDTH = 100,
      HEIGHT = 100
 const originalTriangle = [[5, 95], [95,95], [50, 5]]
-const NUM_GENERATIONS = 10
+const NUM_GENERATIONS = 16
 
 const svg = createSvg();
 drawFromTriangle(originalTriangle)
@@ -90,13 +90,14 @@ function scaleTriangle(triangle, fit) {
   const maxHeight = Math.max(...pairs.map(
     pair => Math.abs(pair[0][Y] - pair[1][Y])))
 
-  const minX = Math.min(...triangle.map(point => point[X]))
-  const minY = Math.min(...triangle.map(point => point[Y]))
-
-  const offset = Math.min(...triangle.map(
-    point => point[maxWidth > maxHeight ? X : Y]))
   const scale = fit / Math.max(maxWidth, maxHeight)
-  return triangle.map(point => [(point[X] - minX) * scale, (point[Y] - minY) * scale])
+  const xOffset = Math.min(...triangle.map(point => point[X]))
+  const yOffset = Math.min(...triangle.map(point => point[Y]))
+  const xCentering = (fit - maxWidth * scale) / 2
+  const yCentering = (fit - maxHeight * scale) / 2
+
+  return triangle.map(point => [(point[X] - xOffset) * scale + xCentering,
+                      (point[Y] - yOffset) * scale + yCentering])
 }
 
 module.exports = createSvg;
