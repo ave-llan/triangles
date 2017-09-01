@@ -35,7 +35,8 @@ function propagate(triangle, generations) {
 }
 
 function subdivideTriangle(event) {
-  drawFromTriangle(d3Selection.select(this).datum())
+  const newTriangle = scaleTriangle(d3Selection.select(this).datum(), WIDTH)
+  drawFromTriangle(newTriangle)
 }
 
 function createSvg() {
@@ -77,6 +78,25 @@ function lineLength(line) {
 function lineMidpoint(line) {
   const [[ax, ay], [bx, by]] = line
   return [(ax + bx) / 2, (ay + by) / 2]
+}
+
+function scaleTriangle(triangle, fit) {
+  const [a, b, c] = triangle
+  const [X, Y] = [0, 1]
+  const pairs = [[a, b], [a, c], [b, c]]
+  // get max of x distance
+  const maxWidth = Math.max(...pairs.map(
+    pair => Math.abs(pair[0][X] - pair[1][X])))
+  const maxHeight = Math.max(...pairs.map(
+    pair => Math.abs(pair[0][Y] - pair[1][Y])))
+
+  const minX = Math.min(...triangle.map(point => point[X]))
+  const minY = Math.min(...triangle.map(point => point[Y]))
+
+  const offset = Math.min(...triangle.map(
+    point => point[maxWidth > maxHeight ? X : Y]))
+  const scale = fit / Math.max(maxWidth, maxHeight)
+  return triangle.map(point => [(point[X] - minX) * scale, (point[Y] - minY) * scale])
 }
 
 module.exports = createSvg;
