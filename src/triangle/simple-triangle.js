@@ -3,7 +3,7 @@ const d3Selection = require("d3-selection")
 const WIDTH = 100,
      HEIGHT = 100
 const originalTriangle = [[5, 95], [95,95], [50, 5]]
-const NUM_GENERATIONS = 10
+const NUM_GENERATIONS = 16
 
 const svg = createSvg();
 drawFromTriangle(originalTriangle)
