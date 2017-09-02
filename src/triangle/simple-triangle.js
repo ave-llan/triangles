@@ -81,9 +81,14 @@ function lineMidpoint(line) {
 }
 
 function scaleTriangle(triangle, fit) {
-  const {width, height, min0, min1} = triangleDimensions(triangle)
+  const {width, height, minX, minY} = triangleDimensions(triangle)
   const scale = fit / Math.max(width, height)
-  return triangle.map(point => [(point[X] - minX) * scale, (point[Y] - minY) * scale])
+  const [centeringX, centeringY] = [width, height]
+      .map(dimension => (fit - dimension * scale) / 2)
+
+  return triangle.map(point => 
+    [(point[0] - minX) * scale + centeringX, 
+     (point[1] - minY) * scale + centeringY])
 }
 
 function triangleDimensions(triangle) {
