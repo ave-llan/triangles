@@ -81,22 +81,19 @@ function lineMidpoint(line) {
 }
 
 function scaleTriangle(triangle, fit) {
-  const [a, b, c] = triangle
-  const [X, Y] = [0, 1]
-  const pairs = [[a, b], [a, c], [b, c]]
-  // get max of x distance
-  const maxWidth = Math.max(...pairs.map(
-    pair => Math.abs(pair[0][X] - pair[1][X])))
-  const maxHeight = Math.max(...pairs.map(
-    pair => Math.abs(pair[0][Y] - pair[1][Y])))
-
-  const minX = Math.min(...triangle.map(point => point[X]))
-  const minY = Math.min(...triangle.map(point => point[Y]))
-
-  const offset = Math.min(...triangle.map(
-    point => point[maxWidth > maxHeight ? X : Y]))
-  const scale = fit / Math.max(maxWidth, maxHeight)
+  const {width, height, min0, min1} = triangleDimensions(triangle)
+  const scale = fit / Math.max(width, height)
   return triangle.map(point => [(point[X] - minX) * scale, (point[Y] - minY) * scale])
+}
+
+function triangleDimensions(triangle) {
+  const [xs, ys] = [0, 1].map(
+    d => {
+      const ds = triangle.map(point => point[d])
+      ds.sort()
+      return ds
+    })
+  return {width: xs[2] - xs[0], height: ys[2] - ys[0], minX: xs[0], minY: ys[0]}
 }
 
 module.exports = createSvg;
